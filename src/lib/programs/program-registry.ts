@@ -34,7 +34,6 @@ import { replayVisionConfig } from './replay-vision/index.js';
 import { aiObservabilityConfig } from './ai-observability/index.js';
 import { metricsConfig } from './metrics/index.js';
 import { slackConnectConfig } from './slack/index.js';
-import { featureFlagsConfig } from './feature-flags/index.js';
 import { featureFlagDriftConfig } from './feature-flag-drift/index.js';
 
 // Generic skill program — runs an arbitrary context-mill skill chosen at
@@ -87,7 +86,6 @@ export const PROGRAM_REGISTRY = [
   aiObservabilityConfig,
   metricsConfig,
   slackConnectConfig,
-  featureFlagsConfig,
   featureFlagDriftConfig,
 ] as const satisfies readonly ProgramConfig[];
 
@@ -116,7 +114,6 @@ export const Program = {
   AiObservability: aiObservabilityConfig.id,
   Metrics: metricsConfig.id,
   SlackConnect: slackConnectConfig.id,
-  FeatureFlags: featureFlagsConfig.id,
   FeatureFlagDrift: featureFlagDriftConfig.id,
 } as const;
 
