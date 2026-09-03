@@ -167,6 +167,8 @@ export const PROGRAM_BINDINGS: Partial<Record<ProgramId, ProgramBinding>> = {
     harness: Harness.anthropic,
     model: SONNET_5_MODEL,
   },
+  // Dispatched via dispatch-family.ts like `audit` above — same binding.
+  'feature-flag-drift': DEFAULT_BINDING,
 };
 
 // ── Unified resolver ────────────────────────────────────────────────────

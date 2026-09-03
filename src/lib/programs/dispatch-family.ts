@@ -2,7 +2,7 @@ import type { Arguments } from 'yargs';
 
 import { auditConfig } from '@lib/programs/audit/index';
 import { agentSkillConfig } from '@lib/programs/program-registry';
-import { flagHealthConfig } from '@lib/programs/flag-health/index';
+import { featureFlagDriftConfig } from '@lib/programs/feature-flag-drift/index';
 import { webAnalyticsDoctorConfig } from '@lib/programs/web-analytics-doctor/index';
 import type { ProgramConfig } from '@lib/programs/program-step';
 import { getSkillsBaseUrl } from '@lib/constants';
@@ -55,15 +55,15 @@ const NATIVE_HANDLERS: Record<string, Record<string, ProgramConfig>> = {
 /**
  * Resolve a fetched CliEntry to the ProgramConfig that actually runs it.
  * Most entries run via the generic agent-skill program with the entry's
- * `skillId` injected. Two exceptions swap in a specialized config instead
- * (custom content blocks, in auditConfig's case also custom screens):
- * skillId 'audit' (the comprehensive `audit all`) and 'flag-health'
- * (`audit flag-health`), which needs a real Learn deck instead of the
- * generic agent-skill filler.
+ * `skillId` injected. Two exceptions swap in a specialized config instead,
+ * both of which route their `run` step to the ledger-driven `audit-run`
+ * screen (and seed the ledger before the agent starts) instead of the
+ * generic single-task run screen: skillId 'audit' (the comprehensive
+ * `audit all`) and 'feature-flag-drift' (`audit feature-flag-drift`).
  */
 function configForCliEntry(entry: CliEntry): ProgramConfig {
   if (entry.skillId === 'audit') return auditConfig;
-  if (entry.skillId === 'flag-health') return flagHealthConfig;
+  if (entry.skillId === 'feature-flag-drift') return featureFlagDriftConfig;
   return { ...agentSkillConfig, skillId: entry.skillId };
 }
 

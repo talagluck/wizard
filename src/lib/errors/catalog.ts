@@ -148,6 +148,12 @@ export const ERROR_CATALOG: Record<ErrorCode, ErrorCatalogEntry> = {
     retry: 'no',
     description: 'Revenue analytics requires a Stripe SDK and none was found.',
   },
+  [ErrorCodes.DetectNoFeatureFlagUsage]: {
+    group: 'detect',
+    retry: 'no',
+    description:
+      'The feature-flag-drift audit needs at least one flag-eval call site and none was found.',
+  },
   [ErrorCodes.DetectUnclassified]: {
     group: 'detect',
     // A detect step reported a precondition failure we have no code for yet.
