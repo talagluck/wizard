@@ -9,6 +9,7 @@ import { InstallationSlide } from './installation.js';
 import { IdentificationSlide } from './identification.js';
 import { EventCaptureSlide } from './eventCapture.js';
 import { LiveDataSlide } from './liveData.js';
+import { FeatureFlagDriftSlide } from './featureFlagDrift.js';
 import { WriteReportSlide } from './writeReport.js';
 import { UploadNotebookSlide } from './uploadNotebook.js';
 
@@ -19,6 +20,7 @@ export const AUDIT_AREA_SLIDES: AreaSlide[] = [
   IdentificationSlide,
   EventCaptureSlide,
   LiveDataSlide,
+  FeatureFlagDriftSlide,
   WriteReportSlide,
   UploadNotebookSlide,
 ];

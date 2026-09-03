@@ -222,6 +222,19 @@ export const WAREHOUSE_SOURCE_SCOPE_ADDITIONS = [
 export const CONNECT_SLACK_SCOPE_ADDITIONS = ['integration:read'] as const;
 
 /**
+ * Extra scope the feature-flag-drift program needs on top of
+ * `WIZARD_OAUTH_SCOPES`. Every one of the skill's 5 roster-alignment checks
+ * lists flags (`feature-flag-get-all` or the equivalent listing tool) —
+ * without `feature_flag:read` those calls 403, and the skill's own
+ * graceful-fallback design resolves them as `suggestion` with
+ * `mcp_skipped: true` rather than surfacing the scope gap directly, so the
+ * report just reads "N checks skipped" until this is granted.
+ */
+export const FEATURE_FLAG_DRIFT_SCOPE_ADDITIONS = [
+  'feature_flag:read',
+] as const;
+
+/**
  * Extra scopes the replay-vision program needs on top of `WIZARD_OAUTH_SCOPES`.
  * The same set self-driving's step 6c uses, narrowed to just this flow:
  *   • replay_scanner:read / replay_scanner:write — the scanner tasks list the
@@ -280,6 +293,7 @@ const PROGRAM_SCOPE_ADDITIONS: Partial<Record<ProgramId, readonly string[]>> = {
   ],
   slack: CONNECT_SLACK_SCOPE_ADDITIONS,
   'replay-vision': REPLAY_VISION_SCOPE_ADDITIONS,
+  'feature-flag-drift': FEATURE_FLAG_DRIFT_SCOPE_ADDITIONS,
 };
 
 /**

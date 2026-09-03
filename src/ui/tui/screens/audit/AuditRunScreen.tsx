@@ -61,6 +61,7 @@ export const AuditRunScreen = ({ store }: AuditRunScreenProps) => {
       slides={slides}
       dashboardUrl={store.session.dashboardUrl}
       notebookUrl={store.session.notebookUrl}
+      columns={columns}
     />
   );
 

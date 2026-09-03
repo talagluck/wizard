@@ -28,6 +28,7 @@ export const ErrorCodes = {
   DetectNoPackageJson: 'PHW_DETECT_NO_PACKAGE_JSON',
   DetectNoSdks: 'PHW_DETECT_NO_SDKS',
   DetectMissingStripe: 'PHW_DETECT_MISSING_STRIPE',
+  DetectNoFeatureFlagUsage: 'PHW_DETECT_NO_FEATURE_FLAG_USAGE',
   DetectUnclassified: 'PHW_DETECT_UNCLASSIFIED',
   SkillMenuFetchFailed: 'PHW_SKILL_MENU_FETCH_FAILED',
   SkillNotFound: 'PHW_SKILL_NOT_FOUND',
