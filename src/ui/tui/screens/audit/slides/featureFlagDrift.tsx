@@ -2,6 +2,16 @@ import { Text } from 'ink';
 import { Colors } from '@ui/tui/styles';
 import { VisualBox, type AreaSlide } from './shared.js';
 
+/**
+ * One panel, matching every sibling slide in this directory (installation,
+ * eventCapture, ...) — this screen has no timer, `intro` renders in full
+ * immediately (AuditAreaPane has no animation, it's gated on the ledger),
+ * so a busy or multi-panel visual just reads as clutter. Lines kept to
+ * 32 chars or under: this VisualBox's own border+paddingX, stacked on
+ * AuditAreaPane's already-halved pane (SplitView's 50% split), leaves
+ * less room than a flat ContentSequencer pane would — verified by
+ * rendering this file's actual output, not just estimated.
+ */
 const FeatureFlagDriftVisual = () => (
   <VisualBox>
     <Text color="gray">{'┌──────────────────────────────┐'}</Text>
@@ -44,10 +54,8 @@ const FeatureFlagDriftVisual = () => (
 export const FeatureFlagDriftSlide: AreaSlide = {
   area: 'Feature Flag Drift',
   intro: [
-    "A feature flag's real state lives in PostHog — its rollout percentage, its variants, who sees what. Your code only holds a key and asks for the value, so the two sides can quietly drift apart.",
-    'A flag can go live in PostHog with no code ever calling it, or code can call a key PostHog has never heard of. The SDK never complains either way — it just falls back to a default, and the branch behind it never runs.',
-    "A flag pinned at 100% (or 0%) for 30+ days with a live branch still on it is dead code nobody's watching. A multivariate flag read with a plain on/off check collapses every variant into true, discarding the information it was built to carry.",
-    "None of this shows up from reading code alone — we're checking both sides at once.",
+    "A flag's real configuration lives in PostHog. Your code only holds a key, so the two can quietly drift apart — with no crash to tell you it happened.",
+    "We're checking both sides at once: ghost keys, stale rollouts, unreferenced flags, and misread variants.",
   ],
   visual: <FeatureFlagDriftVisual />,
   docsUrl: 'https://posthog.com/docs/feature-flags/cleaning-up-stale-flags',
