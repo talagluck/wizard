@@ -13,11 +13,11 @@
  * Pressing `O` opens the active slide's docs URL.
  */
 
-import { Fragment } from 'react';
 import { Box, Text, useInput } from 'ink';
 import { spawn } from 'node:child_process';
 import { Colors } from '@ui/tui/styles';
 import { type AuditCheck } from '@lib/programs/audit/types';
+import { ContentSequencer, TextRevealMode } from '@ui/tui/primitives/index';
 import { AUDIT_AREA_SLIDES, type AreaSlide } from './slides/index.js';
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -61,6 +61,11 @@ interface AuditAreaPaneProps {
   /** Notebook URL once the agent emits `[NOTEBOOK_URL]`. Same sticky-footer
    * treatment as the dashboard URL. */
   notebookUrl?: string | null;
+  /** Terminal columns, for the intro-text word-wrap budget. This pane is
+   * one half of AuditRunScreen's SplitView (a 50% split), so the usable
+   * text width is roughly half of this, minus padding — see paneWidth
+   * below (same formula LearnCard.tsx uses for its own half-pane). */
+  columns: number;
 }
 
 export const AuditAreaPane = ({
@@ -69,7 +74,9 @@ export const AuditAreaPane = ({
   slides = AUDIT_AREA_SLIDES,
   dashboardUrl,
   notebookUrl,
+  columns,
 }: AuditAreaPaneProps) => {
+  const paneWidth = Math.floor((Math.min(120, columns) - 2) / 2) - 2;
   const pendingChecks = checks.filter((c) => c.status === 'pending');
   const activeArea = pendingChecks[0]?.area;
   const slide = activeArea
@@ -92,7 +99,11 @@ export const AuditAreaPane = ({
     const hasFindings = checks.some(isFinding);
     return (
       <Box flexDirection="column">
-        <ActiveSlide slide={slide} hasFindings={hasFindings} />
+        <ActiveSlide
+          slide={slide}
+          hasFindings={hasFindings}
+          availableWidth={paneWidth}
+        />
         {urlsFooter}
       </Box>
     );
@@ -119,9 +130,11 @@ export const AuditAreaPane = ({
 const ActiveSlide = ({
   slide,
   hasFindings,
+  availableWidth,
 }: {
   slide: AreaSlide;
   hasFindings: boolean;
+  availableWidth: number;
 }) => (
   <Box flexDirection="column" paddingX={1}>
     <Text bold color={Colors.accent}>
@@ -130,12 +143,17 @@ const ActiveSlide = ({
     <Box height={1} />
 
     {slide.visual}
-    {slide.intro.map((paragraph, i) => (
-      <Fragment key={i}>
-        {i > 0 && <Box height={1} />}
-        <Text>{paragraph}</Text>
-      </Fragment>
-    ))}
+    <Box height={1} />
+    {/* `key={slide.area}` forces a fresh mount (and a reset reveal) each
+        time the active area changes — ActiveSlide otherwise stays at the
+        same position in the tree across area swaps, so ContentSequencer's
+        internal activeIdx would carry over from the previous slide. */}
+    <ContentSequencer
+      key={slide.area}
+      blocks={slide.intro}
+      mode={TextRevealMode.SentenceBySentence}
+      availableWidth={availableWidth}
+    />
 
     <Box marginTop={1}>
       <Text dimColor>
