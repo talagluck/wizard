@@ -35,6 +35,7 @@ import { aiObservabilityConfig } from './ai-observability/index.js';
 import { metricsConfig } from './metrics/index.js';
 import { slackConnectConfig } from './slack/index.js';
 import { featureFlagsConfig } from './feature-flags/index.js';
+import { flagHealthConfig } from './flag-health/index.js';
 
 // Generic skill program — runs an arbitrary context-mill skill chosen at
 // dispatch time (session.skillId) rather than a registered named program.
@@ -87,6 +88,7 @@ export const PROGRAM_REGISTRY = [
   metricsConfig,
   slackConnectConfig,
   featureFlagsConfig,
+  flagHealthConfig,
 ] as const satisfies readonly ProgramConfig[];
 
 /**
@@ -115,6 +117,7 @@ export const Program = {
   Metrics: metricsConfig.id,
   SlackConnect: slackConnectConfig.id,
   FeatureFlags: featureFlagsConfig.id,
+  FlagHealth: flagHealthConfig.id,
 } as const;
 
 /** Compile-time union of every registered program id. */

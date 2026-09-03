@@ -2,6 +2,7 @@ import type { Arguments } from 'yargs';
 
 import { auditConfig } from '@lib/programs/audit/index';
 import { agentSkillConfig } from '@lib/programs/program-registry';
+import { flagHealthConfig } from '@lib/programs/flag-health/index';
 import { webAnalyticsDoctorConfig } from '@lib/programs/web-analytics-doctor/index';
 import type { ProgramConfig } from '@lib/programs/program-step';
 import { getSkillsBaseUrl } from '@lib/constants';
@@ -54,12 +55,15 @@ const NATIVE_HANDLERS: Record<string, Record<string, ProgramConfig>> = {
 /**
  * Resolve a fetched CliEntry to the ProgramConfig that actually runs it.
  * Most entries run via the generic agent-skill program with the entry's
- * `skillId` injected. The comprehensive `audit all` is the one exception —
- * skillId 'audit' triggers the specialized auditConfig (custom hooks,
- * content blocks, screens).
+ * `skillId` injected. Two exceptions swap in a specialized config instead
+ * (custom content blocks, in auditConfig's case also custom screens):
+ * skillId 'audit' (the comprehensive `audit all`) and 'flag-health'
+ * (`audit flag-health`), which needs a real Learn deck instead of the
+ * generic agent-skill filler.
  */
 function configForCliEntry(entry: CliEntry): ProgramConfig {
   if (entry.skillId === 'audit') return auditConfig;
+  if (entry.skillId === 'flag-health') return flagHealthConfig;
   return { ...agentSkillConfig, skillId: entry.skillId };
 }
 
