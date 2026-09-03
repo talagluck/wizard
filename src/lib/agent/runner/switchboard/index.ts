@@ -161,7 +161,7 @@ export const PROGRAM_BINDINGS: Partial<Record<ProgramId, ProgramBinding>> = {
   },
   slack: DEFAULT_BINDING,
   // Dispatched via dispatch-family.ts like `audit` above — same binding.
-  'flag-health': DEFAULT_BINDING,
+  'feature-flag-drift': DEFAULT_BINDING,
 };
 
 // ── Unified resolver ────────────────────────────────────────────────────

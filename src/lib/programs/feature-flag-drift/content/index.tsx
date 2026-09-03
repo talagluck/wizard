@@ -1,7 +1,7 @@
 /**
- * Flag-health learn-deck — plays while the audit cross-references feature
- * flag code against PostHog's live flag roster. Written for someone who
- * has never audited flags before: each scene names one way code and
+ * Feature-flag-drift learn-deck — plays while the audit cross-references
+ * feature flag code against PostHog's live flag roster. Written for someone
+ * who has never audited flags before: each scene names one way code and
  * PostHog drift apart, with a one-line throwaway example, not just a
  * label. Deliberately no persistent example flag across scenes — each
  * check gets its own disposable illustration so a reader isn't tracking a
@@ -9,7 +9,7 @@
  * audit is about to actually inspect.
  *
  * The report itself never surfaces these checks' kebab-case ids (it
- * renders human labels only — see context-mill flag-health skill,
+ * renders human labels only — see context-mill feature-flag-drift skill,
  * references/3-report.md), so this deck doesn't pre-teach them either.
  */
 
